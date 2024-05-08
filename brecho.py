@@ -1,7 +1,6 @@
 import os
-import random
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 
 # Definição da classe Catalogo para representar os itens do catálogo
 class Catalogo:
@@ -14,14 +13,18 @@ class Catalogo:
 app = Flask(__name__)
 
 # Lista para armazenar os nomes das imagens do catálogo
-catalogo = os.listdir('static/imagens')
+catalogo = os.listdir('static/img_colecao')
 
-# Rota para renderizar a página inicial do catálogo
+# Rota para renderizar a página inicial do brecho
 @app.route('/')
 def iniciarBrecho():
-    # Seleciona aleatoriamente 10 imagens do catálogo
-    fotos_aleatorias = random.sample(catalogo, 10)
-    return render_template('brecho.html', titulo='BrechóSim', fotos_aleatorias=fotos_aleatorias)
+    return render_template('brecho.html', titulo='BrechóSim')
+
+
+# Rota para renderizar a página da coleção completa
+@app.route('/colecao')
+def verColecao():
+    return render_template('colecao.html', fotos=catalogo)
 
 
 # Rota para renderizar a página de cadastro e processar o formulário
@@ -49,7 +52,7 @@ def cadastrar():
 # Função para salvar a imagem enviada pelo formulário
 def salvar_imagem(foto):
     # Define o diretório onde as imagens serão salvas
-    diretorio_destino = 'static/imagens/'
+    diretorio_destino = 'static/img_colecao/'
     
     # Salva a imagem no diretório de destino com o mesmo nome original do arquivo
     caminho_imagem = diretorio_destino + foto.filename
@@ -57,8 +60,5 @@ def salvar_imagem(foto):
     
     # Retorna o caminho completo da imagem
     return caminho_imagem
-
-
-
 
 app.run(debug=True)

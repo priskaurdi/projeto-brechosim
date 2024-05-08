@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coleção Completa</title>
+    <!-- Adicione links para seus estilos CSS aqui -->
+</head>
+<body>
+    <h1>Coleção Completa</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Foto</th>
+                <th>Descrição</th>
+                <th>Preço</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in fotos %}
+            <tr>
+                <td><img src="{{ url_for('static', filename=item) }}" alt="Imagem" style="width: 100px;"></td>
+                <td>Descrição da Imagem</td> <!-- Substitua por uma descrição real, se disponível -->
+                <td>Preço da Imagem</td> <!-- Substitua por um preço real, se disponível -->
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <!-- Adicione outros elementos HTML conforme necessário -->
+</body>
+</html>

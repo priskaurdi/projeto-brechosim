@@ -1,0 +1,74 @@
+body {
+    background-color: lightblue;
+  }
+  
+  h1 {
+    color: white;
+    text-align: center;
+  }
+  
+  p {
+    font-family: verdana;
+    font-size: 20px;
+  }
+
+  /* body {
+    background-color: bisque;
+} */
+
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+}
+
+.card-item {
+    flex: 0 0 25rem;
+    box-sizing: border-box;
+    margin: 1rem 0.25em;
+    border-radius: 10px;
+    border: 1px solid;
+}
+
+.card-image {
+    border-radius: 10px;
+}
+
+// Estilos para o layout flexível
+.flex {
+  display: flex; // Usa display flex para criar um layout flexível
+  justify-content: center; // Centraliza os elementos horizontalmente dentro do contêiner flexível
+}
+
+// Estilos para as caixas de informações
+.box {
+  display: block; // Define as caixas como elementos de bloco
+  width: 280px; // Largura fixa para as caixas
+  height: 160px; // Altura fixa para as caixas
+  border-radius: 5px; // Adiciona bordas arredondadas às caixas
+  text-align: center; // Centraliza o texto horizontalmente dentro das caixas
+  margin: 0px 10px; // Margem externa horizontal de 0px e 10px de margem interna
+
+  // Estilos para a caixa com fundo azul
+  &.box-azul {
+      background-color: #00008b; // Cor de fundo azul escuro
+      color: white; // Cor do texto branca
+  }
+
+  // Estilos para a caixa com fundo verde
+  &.box-verde {
+      background-color: #008000; // Cor de fundo verde escuro
+      color: white; // Cor do texto branca
+  }
+
+  // Estilos para o parágrafo dentro das caixas
+  p {
+      font-size: 1.5rem; // Tamanho da fonte do título
+      margin-bottom: 2px; // Margem inferior de 2px para separar o título do número
+  }
+
+  // Estilos para o número dentro das caixas
+  span {
+      font-size: 2rem; // Tamanho da fonte do número
+  }
+}
