@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../static/css/bootstrap.css">
+
+    <style>
+        body {
+          margin: 20px;
+          background-color: #e2f8cf;
+        }
+        section{
+          padding: 60px 0;
+        }
+    </style>
+
+</head>
+<body>
+    
+    <form method="post" action="/autenticar">
+
+        <fieldset>
+
+            <div class="mb-3">
+                <label for="dtAgenda">Reservar Data</label>
+                <input type="date" id="dtAgenda" name="dtAgenda" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="dtHora">Reservar Horário</label>
+                <input type="datetime" id="dtHora" name="dtHora" class="form-control">
+            </div>
+
+            <div class="mb-3">
+            <button type="submit" class="btn btn-secondary">Agendar</button>
+            </div>
+
+        </fieldset>
+
+    </form>
+
+</body>
+</html>

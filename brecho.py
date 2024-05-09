@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session
 
 # Definição da classe Catalogo para representar os itens do catálogo
 class Catalogo:
@@ -11,6 +11,8 @@ class Catalogo:
         self.preco = preco
 
 app = Flask(__name__)
+
+app.secret_key = 'brechosimmodasustentavel'
 
 # Lista para armazenar os nomes das imagens do catálogo
 catalogo = os.listdir('static/img_colecao')
@@ -25,6 +27,37 @@ def iniciarBrecho():
 @app.route('/colecao')
 def verColecao():
     return render_template('colecao.html', fotos=catalogo)
+
+
+# Rota para renderizar a página de login
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+
+# Rota para autenticar o login
+@app.route('/autenticar', methods=['POST'])
+def autenticar():
+    if request.form['txtSenha'] == 'admin':
+        
+        session['usuario_logado'] = request.form['txtLogin']
+        
+        return redirect('/')
+    else:
+        return redirect('/login')
+
+# Rota para sair
+@app.route('/agendar')
+def agendar():
+    return render_template('agenda.html')
+
+
+# Rota para sair
+@app.route('/sair')
+def sair():
+    session['usuario_logado'] = None
+
+    return redirect('/')
 
 
 # Rota para renderizar a página de cadastro e processar o formulário
@@ -60,5 +93,6 @@ def salvar_imagem(foto):
     
     # Retorna o caminho completo da imagem
     return caminho_imagem
+
 
 app.run(debug=True)

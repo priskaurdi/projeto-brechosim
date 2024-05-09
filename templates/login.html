@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="../static/css/bootstrap.css">
+
+    <style>
+        body {
+          margin: 20px;
+          background-color: #e2f8cf;
+        }
+        section{
+          padding: 60px 0;
+        }
+    </style>
+
+</head>
+<body>
+    
+    <form method="post" action="/autenticar">
+
+        <fieldset>
+
+            <div class="mb-3">
+                <label for="txtLogin">Login</label>
+                <input type="text" id="txtLogin" name="txtLogin" class="form-control">
+            </div>
+
+            <div class="mb-3">
+                <label for="txtSenha">Senha</label>
+                <input type="password" id="txtSenha" name="txtSenha" class="form-control">
+            </div>
+
+            <div class="mb-3">
+            <button type="submit" class="btn btn-secondary">Logar</button>
+            </div>
+
+        </fieldset>
+
+    </form>
+
+
+</body>
+</html>
