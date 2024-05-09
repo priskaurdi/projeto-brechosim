@@ -1,25 +1,7 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="../static/css/bootstrap.css">
+{% extends "padrao.html"%}
 
-    <style>
-        body {
-          margin: 20px;
-          background-color: #e2f8cf;
-        }
-        section{
-          padding: 60px 0;
-        }
-    </style>
-
-</head>
-<body>
-    
-    <form method="post" action="/autenticar">
+{% block conteudo %}    
+    <form method="post" action="/agendar">
 
         <fieldset>
 
@@ -40,6 +22,4 @@
         </fieldset>
 
     </form>
-
-</body>
-</html>
+{% endblock %}

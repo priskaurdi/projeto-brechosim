@@ -1,104 +1,37 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
+{% extends "padrao.html" %}
 
-    <meta charset="UTF-8">
-    
-    <title>Cadastrar Catálogo</title>
-
-    <link rel="stylesheet" href="../static/css/bootstrap.css">
-
-    <style>
-        body {
-          margin: 20px;
-          background-color: #e2f8cf;
-        }
-        section{
-          padding: 60px 0;
-        }
-    </style>
-
-</head>
-<body>
-
-    <!-- navbar -->
-    <nav class="navbar navbar-expand-md navbar-light pt-5 pb-4">
-        <div class="container-xxl">
-            <!-- navbar brand / title -->
-                <a class="navbar-brand" href="#intro">
-                    <span class="text-secondary fw-bold">BrechóSim - Moda Sustentável</span>
-                    <p>
-                        <img src="static\img_logo\instalogo30.png" alt="instagram">
-                        <a href="https://www.instagram.com/brech0sim/" target="_blank" rel="external"></a>
-                    </p>
-                    <p>
-                        <img src="static\img_logo\logoenjoei30.png" alt="Enjoei"> 
-                        <a href="https://www.enjoei.com.br/@brech0sim?sid=8ca37619-316a-4122-b067-b4ce87999e65-1711750969077" target="_blank" rel="external"></a>
-                    </p>
-                </a>
-
-            <!-- toggle button for mobile nav -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-nav" aria-controls="main-nav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <!-- navbar links -->
-            <div class="collapse navbar-collapse justify-content-end align-center" id="main-nav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/colecao">Catálogo</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/cadastrar">Cadastrar</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/sair">Sair</a>
-                    </li>
-                    
-                </ul>
-            </div>
-        </div>
-    </nav>
-    
-
+{% block conteudo %}
     <form method="POST" action="/cadastrar" enctype="multipart/form-data">
 
         <fieldset>
 
             <legend>Faça o cadastro de novas roupas</legend>
 
-            <div class="mb-3">
+            <div class="mb-4">
                 <label for="foto">Foto da roupa</label>
                 <input type="file" id="foto" name="foto" class="form-control">
             </div>
             
-            <div class="mb-3">
+            <div class="mb-4">
                 <label for="idnome">Nome da roupa</label>
                 <input type="text" id="idnome" name="idnome" class="form-control">
             </div>
 
-            <div class="mb-3">
+            <div class="mb-4">
                 <label for="descricao">Descrição da roupa</label>
                 <input type="text" id="descricao" name="descricao" class="form-control">
             </div>
 
-            <div class="mb-3">
+            <div class="mb-4">
                 <label for="preco">Preço da roupa</label>
                 <input type="text" id="preco" name="preco" class="form-control">
             </div>
 
-            <div class="mb-3">
-                <button type="submit" class="btn btn-outline-primary btn-lg mt-3">Cadastrar Roupa</button> <!-- "btn btn-secondary" -->
+            <div class="mb-4">
+                <button type="submit" class="btn btn-secondary btn-lg">Cadastrar Roupa</button> <!-- "btn btn-secondary" -->
             </div>
 
         </fieldset>
     </form>
-    
+{% endblock %}    
 
-
-
-</body>
-</html>

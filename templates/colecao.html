@@ -1,27 +1,6 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
+{% extends "padrao.html" %}
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coleção Completa</title>
-    
-    <link rel="stylesheet" href="../static/css/bootstrap.css">
-
-    <style>
-        body {
-          margin: 20px;
-          background-color: #e2f8cf;
-        }
-        section{
-          padding: 60px 0;
-        }
-    </style>
-
-
-</head>
-<body>
-
+{% block colecao %}
     <div class="container-fluid">
     <h1>Coleção Completa</h1>
 
@@ -49,5 +28,4 @@
     
     <!-- Adicione outros elementos HTML conforme necessário -->
     </div>
-</body>
-</html>
+{% endblock %}
