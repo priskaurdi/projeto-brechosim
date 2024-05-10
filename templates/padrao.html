@@ -6,7 +6,7 @@
     
     <title>Cadastrar Catálogo</title>
 
-    <link rel="stylesheet" href="../static/css/bootstrap.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.css')}}">
 
     <style>
         body {
@@ -20,6 +20,16 @@
 
 </head>
 <body>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class="list-unstyled" id="messages">
+                {% for message in messages %}
+                    <li class="alert alert-sucess">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
 
     <!-- navbar -->
     <nav class="navbar navbar-expand-md navbar-light pt-5 pb-4">
