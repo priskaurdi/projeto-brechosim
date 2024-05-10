@@ -20,6 +20,18 @@
                 <td><img src="{{ url_for('static', filename='img_colecao/' + item.idFotoProduto) }}" alt="Imagem" style="width: 100px;"></td>
                 <td>{{ item.nmProduto }}</td>
                 <td>{{ item.vlUnidade }}</td>
+                <td>
+                    <form method="post" action="/processar_pagamento">
+                        <input type="hidden" name="produto_id" value="{{ item.cdProduto }}">
+                        <div class="mb-3">
+                            <label for="nome_titular">Nome do Titular do Cartão</label>
+                            <input type="text" id="nome_titular" name="nome_titular" class="form-control" required>
+                        </div>
+                        <!-- Adicione mais campos para as informações de pagamento, como número do cartão, data de validade, etc. -->
+                        <button type="submit" class="btn btn-primary">Comprar</button>
+                    </form>
+                </td>
+
             </tr>
             {% endfor %}
         </tbody>

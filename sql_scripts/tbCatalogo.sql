@@ -14,3 +14,5 @@ ALTER TABLE catalogo
 ADD COLUMN dtCadastro datetime;
 
 update catalogo set dtCadastro = '2025-05-10' where cdProduto in (1, 2, 3, 4, 5);
+
+update catalogo set idFotoProduto = 'blusabataamarela.jpeg' where cdProduto = 1;

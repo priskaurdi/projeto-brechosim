@@ -1,6 +1,6 @@
 # Importando bibliotecas
 import os
-from flask import Flask, render_template, request, redirect, session, flash, url_for
+from flask import Flask, render_template, request, redirect, session, flash, url_for, send_file
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
@@ -187,6 +187,28 @@ def salvar_imagem(foto):
     
     # Retorna o caminho completo da imagem
     return foto.filename
+
+
+@app.route('/pagamento', methods=['POST'])
+def pagamento():
+    # Lógica para processar o pagamento...
+
+    # Gerar um QR code do PIX
+    qr = qrcode.make('Dados do pagamento PIX')  # Substitua 'Dados do pagamento PIX' pelos dados reais do PIX
+
+    # Salvar o QR code em um arquivo temporário
+    qr_path = 'static/qr_code_pix.png'
+    qr.save(qr_path)
+
+    # Renderizar a página de confirmação de pagamento com o QR code do PIX
+    return render_template('confirmacao_pagamento.html', qr_code=qr_path)
+
+    # Redirecionar para o WhatsApp
+    produto = request.form['nome_produto']  # Supondo que você passe o nome do produto pelo formulário
+    mensagem = f'Olá! Gostaria de comprar o produto {produto}.'
+    numero_whatsapp = 'seu_numero_whatsapp'  # Substitua pelo número de WhatsApp real
+    link_whatsapp = f'https://api.whatsapp.com/send?phone={numero_whatsapp}&text={mensagem}'
+    return redirect(link_whatsapp)
 
 
 if __name__ == '__main__':

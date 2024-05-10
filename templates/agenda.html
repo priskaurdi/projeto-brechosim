@@ -5,21 +5,26 @@
 
         <fieldset>
 
+            <legend>Faça a reserva do seu horário no BrechóSim!</legend>
+
             <div class="mb-3">
-                <label for="dtAgenda">Reservar Data</label>
-                <input type="date" id="dtAgenda" name="dtAgenda" class="form-control">
+                <label for="dtAgendamento">Reservar Data</label>
+                <input type="date" id="dtAgendamento" name="dtAgendamento" class="form-control">
             </div>
 
             <div class="mb-3">
-                <label for="dtHora">Reservar Horário</label>
-                <input type="datetime" id="dtHora" name="dtHora" class="form-control">
+                <label for="dtContato">Data de Contato</label>
+                <input type="datetime-local" id="dtContato" name="dtContato" class="form-control">
             </div>
 
             <div class="mb-3">
-            <button type="submit" class="btn btn-secondary">Agendar</button>
+                <label for="qtProduto">Quantidade de Produtos</label>
+                <input type="number" id="qtProduto" name="qtProduto" class="form-control">
             </div>
 
-        </fieldset>
+            <div class="mb-3">
+                <button type="submit" class="btn btn-secondary">Agendar</button>
+            </div>
 
     </form>
 {% endblock %}
