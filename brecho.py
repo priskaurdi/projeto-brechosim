@@ -1,45 +1,8 @@
+# Importando bibliotecas
 import os
-
 from flask import Flask, render_template, request, redirect, session, flash, url_for
-
-# Definição da classe Catalogo para representar os itens do catálogo
-class Catalogo:
-    def __init__(self, foto, idnome, descricao, preco):
-        self.foto = foto
-        self.idnome = idnome
-        self.descricao = descricao
-        self.preco = preco
-
-# Definição da classe Usuário
-class Usuario:
-    def __init__(self, cdCliente, nmCliente, cpf, celular, endereco, numero, compEnd, 
-                 bairro, cidade, estado, cep, login, senha):
-        self.cdCliente = cdCliente
-        self.nmCliente = nmCliente
-        self.cpf = cpf
-        self.celular = celular
-        self.endereco = endereco
-        self.numero = numero
-        self.compEnd = compEnd
-        self.bairro = bairro
-        self.cidade = cidade
-        self.estado = estado
-        self.cep = cep
-        self.login = login
-        self.senha = senha
-
-usuario01 = Usuario("0001", "Daniel", "12345678900", "11912345678", "Rua Mantua", "15", "Casa", "Lisboa", 
-                    "Santos", "CE", "08646780", "dani.dani", "admin")
-usuario02 = Usuario("0002", "Patrick", "12345678900", "11912345678", "Rua Mantua", "15", "Casa", "Lisboa", 
-                    "Santos", "CE", "08646780", "patrick.sponge", "1234")
-usuario03 = Usuario("0003", "Xavier", "12345678900", "11912345678", "Rua Mantua", "15", "Casa", "Lisboa", 
-                    "Santos", "CE", "08646780", "xavi.mente", "7968")
-
-usuarios = {
-    usuario01.login : usuario01,
-    usuario02.login : usuario02,
-    usuario03.login : usuario03
-}
+from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 
 
 # Criando o app
@@ -47,8 +10,69 @@ app = Flask(__name__)
 
 app.secret_key = 'brechosimmodasustentavel'
 
-# Lista para armazenar os nomes das imagens do catálogo
-catalogo = os.listdir('static/img_colecao')
+app.config['SQLALCHEMY_DATABASE_URI'] = \
+    '{SGBD}://{usuario}:{senha}@{servidor}/{database}'.format(
+        SGBD = 'mysql+mysqlconnector',
+        usuario = 'root',
+        senha = 'admin',
+        servidor = 'localhost',
+        database = 'dbbrechosim'
+    )
+
+db = SQLAlchemy(app)
+
+
+# Definindo as classes
+class Brecho(db.Model):
+    cdPedido = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    nk_cdProduto = db.Column(db.Integer, nullable=False)
+    nk_cdCliente = db.Column(db.Integer, nullable=False)
+    dtAgendamento = db.Column(db.DateTime, nullable=False)
+    dtContato = db.Column(db.DateTime, nullable=False)
+    qtProduto = db.Column(db.Integer, nullable=False)
+
+    def __repr__(self):
+        return '<Name %r>' %self.name
+    
+
+class Catalogo(db.Model):
+    cdProduto = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    nmProduto = db.Column(db.String(50), nullable=False)
+    cdFornecedor = db.Column(db.Integer, nullable=False)
+    nmFornecedor = db.Column(db.String(50), nullable=False)
+    cdCategoria = db.Column(db.Integer, nullable=False)
+    nmCategoria = db.Column(db.String(50), nullable=False)
+    cdUnidade = db.Column(db.Integer, nullable=False)
+    dsUnidade = db.Column(db.String(50), nullable=False)
+    vlUnidade = db.Column(db.Numeric(10, 2), nullable=False)
+    idFotoProduto = db.Column(db.String(100), nullable=False)
+    dtCadastro = db.Column(db.DateTime, nullable=False)
+
+    def __repr__(self):
+        return '<Name %r>' %self.name
+
+
+class Cliente(db.Model):
+    cdCliente = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    nmCliente = db.Column(db.String(50), nullable=False)
+    cpf = db.Column(db.String(11), nullable=False)
+    celular = db.Column(db.String(15), nullable=False)
+    dtNascimento = db.Column(db.DateTime, nullable=False)
+    endereco = db.Column(db.String(50), nullable=False)
+    numero = db.Column(db.Integer, nullable=False)
+    compEnd = db.Column(db.String(50), nullable=False)
+    bairro = db.Column(db.String(50), nullable=False)
+    cidade = db.Column(db.String(50), nullable=False)
+    estado = db.Column(db.String(50), nullable=False)
+    cep = db.Column(db.Integer, nullable=False)
+    login = db.Column(db.String(50), nullable=False)
+    senha = db.Column(db.String(50), nullable=False)
+    email = db.Column(db.String(50), nullable=False)
+
+    def __repr__(self):
+        return '<Name %r>' %self.name
+
+
 
 # Rota para renderizar a página inicial do brecho
 @app.route('/')
@@ -59,10 +83,11 @@ def iniciarBrecho():
 # Rota para renderizar a página da coleção completa
 @app.route('/colecao')
 def verColecao():
-    if session['usuario_logado'] == None or 'usuario_logado' not in session:
-        return redirect(url_for('login'))
-    else:   
-        return render_template('colecao.html', fotos=catalogo)
+    
+    # Consulta todos os itens do catálogo no banco de dados
+    catalogo = Catalogo.query.order_by(Catalogo.cdProduto).all()
+       
+    return render_template('colecao.html', fotos=catalogo)
 
 
 # Rota para renderizar a página de login
@@ -74,27 +99,23 @@ def login():
 # Rota para autenticar o login
 @app.route('/autenticar', methods=['POST'])
 def autenticar():
-    if request.form['txtLogin'] in usuarios:
-
-        usuarioEncontrado = usuarios[request.form['txtLogin']]
-
-        if request.form['txtSenha'] == usuarioEncontrado.senha:
-        
-            session['usuario_logado'] = request.form['txtLogin']
-        
-            flash(f"Seja bem-vindo, {usuarioEncontrado.nome}!")
-
-            return redirect(url_for('iniciarBrecho'))
-        else:
-            flash("Senha inválida!")
-
-            return redirect(url_for('login')) 
+    # Recupera o nome de usuário e senha do formulário
+    login = request.form['txtLogin']
+    senha = request.form['txtSenha']
     
+    # Consulta o banco de dados para encontrar um cliente com o nome de usuário fornecido
+    cliente = Cliente.query.filter_by(login=login).first()
+
+    # Verifica se o cliente foi encontrado e se a senha está correta
+    if cliente and cliente.senha == senha:
+        # Define o usuário logado na sessão
+        session['usuario_logado'] = cliente.login
+        flash(f"Seja bem-vindo, {cliente.nmCliente}!")
+        return redirect(url_for('iniciarBrecho'))
     else:
-
-        flash("Usuário ou Senha inválida")
-
+        flash("Usuário ou senha inválida")
         return redirect(url_for('login'))
+    
 
 # Rota para sair
 @app.route('/agendar')
@@ -119,22 +140,38 @@ def cadastrar():
 
     if session['usuario_logado'] == None or 'usuario_logado' not in session:
         return redirect(url_for('login'))
-    else:   
-        if request.method == 'POST':
-            # Recupera os dados do formulário
-            foto = request.files['foto']
-            idnome = request.form['idnome']
-            descricao = request.form['descricao']
-            preco = request.form['preco']
+      
+    if request.method == 'POST':
+        # Recupera os dados do formulário
+        dtCadastro = datetime.now()
+        nmProduto = request.form['nmProduto']
+        cdFornecedor = 1  # Defina o valor do fornecedor conforme necessário
+        nmFornecedor = request.form['nmFornecedor']
+        cdCategoria = 1  # Defina o valor da categoria conforme necessário
+        nmCategoria = request.form['nmCategoria']
+        cdUnidade = 1  # Defina o valor da unidade conforme necessário
+        dsUnidade = request.form['dsUnidade']
+        vlUnidade = request.form['vlUnidade']
+        idFotoProduto = salvar_imagem(request.files['foto'])
+        
             
-            # Salva a imagem no diretório "static/imagens"
-            caminho_imagem = salvar_imagem(foto)
+        # Cria uma nova instância da classe Catalogo com os dados do formulário
+        novo_item = Catalogo(
+            nmProduto=nmProduto,
+            cdFornecedor=cdFornecedor,
+            nmFornecedor=nmFornecedor,
+            cdCategoria=cdCategoria,
+            nmCategoria=nmCategoria,
+            cdUnidade=cdUnidade,
+            dsUnidade=dsUnidade,
+            vlUnidade=vlUnidade,
+            idFotoProduto=idFotoProduto,
+            dtCadastro=dtCadastro
+            )
             
-            # Cria uma nova instância da classe Catalogo com os dados do formulário
-            novo_item = Catalogo(caminho_imagem, idnome, descricao, preco)
-            
-            # Adiciona o novo item à lista de catalogo
-            catalogo.append(novo_item)
+        # Adiciona o novo item ao banco de dados
+        db.session.add(novo_item)
+        db.session.commit()
             
     # Renderiza a página de cadastro
     return render_template('cadastra_catalogo.html')
@@ -149,7 +186,8 @@ def salvar_imagem(foto):
     foto.save(caminho_imagem)
     
     # Retorna o caminho completo da imagem
-    return caminho_imagem
+    return foto.filename
 
 
-app.run(debug=True)
+if __name__ == '__main__':
+    app.run(debug=True)

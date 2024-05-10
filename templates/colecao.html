@@ -17,9 +17,9 @@
         <tbody>
             {% for item in fotos %}
             <tr>
-                <td><img src="{{ url_for('static', filename='img_colecao/' + item) }}" alt="Imagem" style="width: 100px;"></td>
-                <td>Descrição da Imagem</td> <!-- Substitua por uma descrição real, se disponível -->
-                <td>Preço da Imagem</td> <!-- Substitua por um preço real, se disponível -->
+                <td><img src="{{ url_for('static', filename='img_colecao/' + item.idFotoProduto) }}" alt="Imagem" style="width: 100px;"></td>
+                <td>{{ item.nmProduto }}</td>
+                <td>{{ item.vlUnidade }}</td>
             </tr>
             {% endfor %}
         </tbody>
