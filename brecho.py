@@ -120,10 +120,9 @@ def autenticar():
 # Rota para sair
 @app.route('/agendar')
 def agendar():
-    if session['usuario_logado'] == None or 'usuario_logado' not in session:
+    if session.get('usuario_logado') is None:
         return redirect(url_for('login'))
-    else:   
-        return render_template('agenda.html')
+    return render_template('agenda.html')
 
 
 # Rota para sair

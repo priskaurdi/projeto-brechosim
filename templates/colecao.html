@@ -18,17 +18,14 @@
             {% for item in fotos %}
             <tr>
                 <td><img src="{{ url_for('static', filename='img_colecao/' + item.idFotoProduto) }}" alt="Imagem" style="width: 100px;"></td>
-                <td>{{ item.nmProduto }}</td>
-                <td>{{ item.vlUnidade }}</td>
-                <td>
-                    <form method="post" action="/processar_pagamento">
+                <td style="font-size: 36px;">{{ item.nmProduto }}</td>
+                <td style="font-size: 36px;">
+                    {{ item.vlUnidade }}
+                    <form method="post" action="{{ url_for('login') }}">
                         <input type="hidden" name="produto_id" value="{{ item.cdProduto }}">
-                        <div class="mb-3">
-                            <label for="nome_titular">Nome do Titular do Cartão</label>
-                            <input type="text" id="nome_titular" name="nome_titular" class="form-control" required>
-                        </div>
+                        <input type="text" id="nome_titular" name="nome_titular" class="form-control" required style="display: none;"> <!-- Esconde o campo de nome do titular -->
                         <!-- Adicione mais campos para as informações de pagamento, como número do cartão, data de validade, etc. -->
-                        <button type="submit" class="btn btn-primary">Comprar</button>
+                        <button type="submit" class="btn btn-primary">Reserve</button>
                     </form>
                 </td>
 
@@ -38,6 +35,27 @@
 
     </table>
     
-    <!-- Adicione outros elementos HTML conforme necessário -->
-    </div>
+    <!-- novo parágrafo -->
+    <p class="lead my-4" style="color: #333;">
+        Aqui você encontra uma variedade de produtos que estão disponíveis para uma pré-reserva para a sua próxima visita.
+        Caso prefira, você pode agendar sem reserva clicando no botão abaixo:
+    </p>
+
+    <!-- redirecionar para agendamento -->
+    <a href="{{ url_for('agendar') }}" class="btn btn-secondary btn-lg">Agende um horário</a>
+
+    <!-- open sidebar / offcanvas -->
+    <a href="#sidebar" class="d-block mt-3" data-bs-toggle="offcanvas" role="button" aria-controls="sidebar"></a>
+</div>
+
+    <!-- <div class="col-md-5 text-center d-none d-md-block">
+     tooltip -->
+        <!-- <span class="tt" data-bs-placement="bottom" title="BrechoSim">
+            <img src="{{ url_for('static', filename='img_logo/logobrechosim.jpeg') }}" class="img-cat" alt="logo-brecho" style="width: 350px;">
+        </span>
+        <span class="tt" data-bs-placement="bottom" title="BrechoSim">
+            <video src="{{ url_for('static', filename='imagens/BrechóSim.mp4') }}" width="600" autoplay loop muted poster="{{ url_for('static', filename='img_logo/logobrechosim.jpeg') }}"></video>
+        </span>
+    </div> -->
+    
 {% endblock %}

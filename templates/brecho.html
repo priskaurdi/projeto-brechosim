@@ -28,7 +28,25 @@
     }
     #reviews.bg-cor{
       background-color: #fdf1bd;
-    }        
+    } 
+    .whatsapp-link {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    bottom: 40px;
+    right: 40px;
+    background-color: #25d366;
+    color: #fff;
+    border-radius: 50px;
+    text-align: center;
+    font-size: 30px;
+    box-shadow: 1px 1px 2px #888;
+    z-index: 1000;
+  }
+
+  .fa-whatsapp {
+    margin-top: 16px;
+  }     
 
   </style>
 </head>
@@ -84,33 +102,40 @@
     </div>
   </nav>
         
-  <!-- main image & intro text -->
+
+  <a class="whatsapp-link" href="https://wa.me/5511968669243" target="_blank">
+    <i class="fa fa-whatsapp"></i>
+  </a>
+
+  <!-- Main image & intro text -->
   <section id="intro">
     <div class="container-lg">
-      <div class="row g-4 justify-content-center align-items-center">
-        
-        <div class="col-md-5 text-center text-md-start">
-          <h1>
-            <div class="display-2">BrechóSim</div>
-            <div class="display-5 text-muted">Moda Sustentável</div>
-          </h1>
-          <p class="lead my-4 text-muted">Diga sim à moda de reuso, o planeta e seu bolso agradecem.</p>
-          <a href="#pricing" class="btn btn-secondary btn-lg">Compre ZAP</a>
-                  
-          <!-- open sidebar / offcanvas -->
-          <a href="#sidebar" class="d-block mt-3" data-bs-toggle="offcanvas" role="button" aria-controls="sidebar">
-            Explore a coleção inteira!</a>
+        <div class="row g-4 justify-content-center align-items-center">
+            <div class="col-md-5 text-center text-md-start">
+                <h1>
+                    <div class="display-2">BrechóSim</div>
+                    <div class="display-5 text-muted">Moda Sustentável</div>
+                </h1>
+                <p class="lead my-4 text-muted">Diga sim à moda de reuso, o planeta e seu bolso agradecem.</p>
+                <!-- New paragraph -->
+                <p class="lead my-4" style="color: #333;">Seja bem vinda! Estamos muito felizes em recebê-la!</p>
+                <p class="lead my-4" style="color: #333;">Ao clicar nesse botão você pode escolher um item e nós reservaremos para você provar:</p>
+                <a href="{{ url_for('verColecao') }}" class="btn btn-secondary btn-lg">Reserve uma peça</a>
+                <!-- Open sidebar / offcanvas -->
+                <a href="#sidebar" class="d-block mt-3" data-bs-toggle="offcanvas" role="button" aria-controls="sidebar"></a>
+                <p class="lead my-4" style="color: #333;">Já nesse botão é para você que prefere agendar sem escolher um produto:</p>
+                <a href="{{ url_for('agendar') }}" class="btn btn-secondary btn-lg">Agende um horário</a>
+                <!-- Open sidebar / offcanvas -->
+                <a href="#sidebar" class="d-block mt-3" data-bs-toggle="offcanvas" role="button" aria-controls="sidebar"></a>
+            </div>
+            <div class="col-md-5 text-center d-none d-md-block">
+                <span class="tt" data-bs-placement="bottom" title="BrechóSim">
+                    <video src="{{ url_for('static', filename='img_logo/BrechóSim.mp4') }}" width="700" autoplay loop muted poster="{{ url_for('static', filename='img_logo/logobrechosim.jpeg') }}"></video>
+                </span>
+            </div>
         </div>
-                
-        <div class="col-md-5 text-center d-none d-md-block">
-          <!-- tooltip -->
-          <span class="tt" data-bs-placement="bottom" title="BrechoSim">
-            <img src="/static/img_logo/Logotipo1.0.png" class="img-cat" alt="logo-brecho" style="width: 350px;" >
-          </span>
-        </div>
-      </div>
     </div>
-  </section>
+</section>
         
   <!-- pricing plans -->
   <section id="pricing" class="bg-cor mt-4">
@@ -165,10 +190,56 @@
                     Comprar
                   </a>
               </div>
+
+              
           </div>
         </div>
       </div>
     </div><!-- end container -->
+
+    <div class="container">
+      <div class="text-center">
+        <h2>Nosso espaço</h2>
+        <p class="lead text-muted">Venha nos visitar.</p>
+      </div>
+  
+      <div>
+        <img src="{{ url_for('static', filename='img_colecao/vestidorendadoforro.jpeg') }}" height="450" alt="Vestido Rendado com Forro">
+  
+        <img src="{{ url_for('static', filename='img_colecao/vestidofestacosta.jpeg') }}" height="450" alt="Vestido Festa Costa">
+  
+        <img src="{{ url_for('static', filename='img_colecao/vestidobrancorendado.jpeg') }}" height="450" alt="Vestido Branco Rendado">
+  
+        <img src="{{ url_for('static', filename='img_colecao/blusashortamarelobranco.jpeg') }}" height="450" alt="Blusa e Short Amarelo e Branco">
+      </div>
+
+    <div class="container">
+      <div class="text-center">
+        <h2>Peças e Acessórios</h2>
+        <p class="lead text-muted">Escolha a peça que combine com seu estilo.</p>
+      </div>
+      <div>
+        <img src="{{ url_for('static', filename='img_colecao/blusabataamarela.jpeg') }}" width="200" alt="Blusa Bata Amarela">
+
+        <img src="{{ url_for('static', filename='img_colecao/shoesanabelablack1.jpeg') }}" width="200" alt="Sapato Anabela Preto">
+
+        <img src="{{ url_for('static', filename='img_colecao/shoesverdevazado.jpeg') }}" width="200" alt="Sapato Verde Vazado">
+
+        <img src="{{ url_for('static', filename='img_colecao/vestidoazultomara.jpeg') }}" width="200" alt="Vestido Azul Tomara que Caia">
+
+        <img src="{{ url_for('static', filename='img_colecao/vestazulfloresrosas.jpeg') }}" width="200" alt="Vestido Azul com Flores Rosas">
+
+        <img src="{{ url_for('static', filename='img_colecao/vestidoblackzebra.jpeg') }}" width="200" alt="Vestido Preto com Estampa de Zebra">
+
+        <img src="{{ url_for('static', filename='img_colecao/vestidobrancorendado.jpeg') }}" width="200" alt="Vestido Branco Rendado">
+
+        <img src="{{ url_for('static', filename='img_colecao/vestidofestacinza.jpeg') }}" width="200" alt="Vestido de Festa Cinza">
+
+        <img src="{{ url_for('static', filename='img_colecao/vestidofestacosta.jpeg') }}" width="200" alt="Vestido de Festa com Costa Aberta">
+
+        <img src="{{ url_for('static', filename='img_colecao/vestidograylaco.jpeg') }}" width="200" alt="Vestido Cinza com Laço">
+      </div>
+    </div>
   </section>
         
   <!-- topics at a glance -->

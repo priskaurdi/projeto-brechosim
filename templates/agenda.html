@@ -1,7 +1,7 @@
 {% extends "padrao.html"%}
 
 {% block conteudo %}    
-    <form method="post" action="/agendar">
+    <form method="post" action="{{ url_for('agendar') }}">
 
         <fieldset>
 
@@ -27,4 +27,74 @@
             </div>
 
     </form>
+
+    <div class="container"> 
+        <div class="d-flex gap-4 mt-3">
+    
+            <span class="tt" data-bs-placement="bottom" title="Net Ninja Pro book cover">
+                <video src="{{ url_for('static', filename='imagens/BrechóSim.mp4') }}" width="700" autoplay loop muted
+                  poster="{{ url_for('static', filename='imagens/BrechóSim22.png') }}"></video>
+              </span>
+     
+            <form class="col-md-4" action="{{ url_for('appointment-create') }}" method="post">
+                {% csrf_token %}
+                <h3>Novo Agendamento</h3>
+                {% for field in form %}
+                <div class="mt-3">
+                    {{field.label}}
+                    {{field}}
+                </div>
+                {% endfor %}
+                <input type="submit" class="btn btn-primary mt-3" value="Salvar">
+            </form>
+            
+        </div> 
+    </div>
+
+    <div class="d-flex gap-4 mt-4">
+
+        <div class="">
+            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="false">
+                <div class="carousel-inner">
+                    {% for el in reservation.item_images.all %}
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                        <img src="{{el.image.url}}" class="card-image" width="100%" height="500" alt="{{el.id}}">
+                    </div>
+                    {% endfor %}
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
+                    data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
+                    data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+
+            <div class="mt-3">
+                <p>Codígo: {{reservation.code}}</p>
+                <p>descrição: {{reservation.description}}</p>
+                <p>Valor: {{reservation.price}}</p>
+                <div class="badge bg-success">Tipo: {{reservation.type_item}}</div>
+            </div>
+
+        </div>
+
+        <form class="col-md-4" action="{{ url_for('reservation-create', reservation_id=reservation.id) }}" method="post">
+            {% csrf_token %}
+            <h3>Formulário de Registro de Reserva</h3>
+
+            {% for field in form %}
+            <div class="mt-3">
+                {{field.label}}
+                {{field}}
+            </div>
+            {% endfor %}
+            <input type="submit" class="btn btn-primary mt-3" value="Reservar">
+        </form>
+    </div>
+</div>
 {% endblock %}
