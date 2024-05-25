@@ -11,6 +11,7 @@
                 <th>Foto</th>
                 <th>Descrição</th>
                 <th>Preço</th>
+                <th>Ações</th>
             </tr>
         </thead>
 
@@ -28,7 +29,7 @@
                         <button type="submit" class="btn btn-primary">Reserve</button>
                     </form>
                 </td>
-
+                <td><a href="{{ url_for('editar')}}">Editar</a></td>
             </tr>
             {% endfor %}
         </tbody>

@@ -9,6 +9,38 @@ def iniciarBrecho():
     return render_template('brecho.html', titulo='BrechóSim')
 
 
+# Rota para editar o catalogo
+@app.route('/editar') #/<int:idFotoProduto
+def editar(): #idFotoProduto
+    if session.get('usuario_logado') is None:
+        return redirect(url_for('login'))
+    
+    #pecaBuscada = Catalogo.query.filter_by(idFotoProduto=idFotoProduto).first()
+
+    return render_template('editar_catalogo.html', 
+                           titulo = 'Editar Catálogo')
+                           #peca = pecaBuscada)
+
+
+# Rota para atualizar o catalogo
+@app.route('/atualizar', methods=['POST'])
+def atualizar():
+    
+    peca = Catalogo.query.filter_by(idFotoProduto=request.form['idFotoProduto']).first()
+
+    peca.dtCadastro = request.form['dtCadastro']
+    peca.nmProduto = request.form['nmProduto']
+    peca.nmFornecedor = request.form['nmFornecedor']
+    peca.nmCategoria = request.form['nmCategoria']
+    peca.dsUnidade = request.form['dsUnidade']
+    peca.vlUnidade = request.form['vlUnidade']
+
+    db.session.add(peca)
+    db.session.commit()
+
+    return redirect(url_for('verColecao'))
+
+
 # Rota para renderizar a página da coleção completa
 @app.route('/colecao')
 def verColecao():
