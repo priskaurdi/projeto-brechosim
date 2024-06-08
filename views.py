@@ -41,6 +41,19 @@ def atualizar():
     return redirect(url_for('verColecao'))
 
 
+# Rota para excluir item do catalogo
+@app.route('/excluir/<int:id>')
+def excluir(id):
+    
+    peca = Catalogo.query.filter_by(idFotoProduto=request.form['idFotoProduto']).delete()
+
+    db.session.commit()
+
+    flash("Peça excluída!")
+
+    return redirect(url_for('verColecao'))
+
+
 # Rota para renderizar a página da coleção completa
 @app.route('/colecao')
 def verColecao():
@@ -76,7 +89,8 @@ def autenticar():
     else:
         flash("Usuário ou senha inválida")
         return redirect(url_for('login'))
-    
+
+
 
 # Rota para sair
 @app.route('/agendar')

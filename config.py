@@ -1,3 +1,5 @@
+import os
+
 SECRET_KEY = 'brechosimmodasustentavel'
 
 SQLALCHEMY_DATABASE_URI = \
@@ -8,3 +10,5 @@ SQLALCHEMY_DATABASE_URI = \
         servidor = 'localhost',
         database = 'dbbrechosim'
     )
+
+
