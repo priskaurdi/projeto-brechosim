@@ -5,6 +5,8 @@
 
     <fieldset>
 
+        {{ form.csrf_token() }}
+
         <legend>Faça o cadastro de novas roupas</legend>
 
         <div class="mb-4">
@@ -13,8 +15,8 @@
         </div>
         
         <div class="mb-4">
-            <label for="nmProduto">Nome da roupa</label>
-            <input type="text" id="nmProduto" name="nmProduto" class="form-control">
+            {{ form.nome.label(class="form-label")}}
+            {{ form.nome(class="form-control")}}
         </div>
 
         <div class="mb-4">
@@ -23,8 +25,8 @@
         </div>
 
         <div class="mb-4">
-            <label for="nmCategoria">Nome da categoria</label>
-            <input type="text" id="nmCategoria" name="nmCategoria" class="form-control">
+            {{ form.categoria.label(class="form-label")}}
+            {{ form.categoria(class="form-control")}}
         </div>
 
         <div class="mb-4">
@@ -48,7 +50,7 @@
         </div>
 
         <div class="mb-4">
-            <button type="submit" class="btn btn-secondary btn-lg">Cadastrar Roupa</button>
+            {{ form.cadastrar(class="btn btn-secondary btn-lg") }}
         </div>
 
     </fieldset>

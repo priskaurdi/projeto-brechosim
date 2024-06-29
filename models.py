@@ -1,5 +1,18 @@
 
 from brecho import db
+from flask_wtf import FlaskForm
+from wtforms import StringField, validators, SubmitField
+
+
+
+class FormBrecho(FlaskForm):
+    nome = StringField('Nome da roupa', [validators.DataRequired(),
+                                        validators.length(min=2, max=50)])
+    categoria = StringField('Nome da categoria', [validators.DataRequired(),
+                                          validators.length(min=2, max=50)])
+    cadastrar = SubmitField('Cadastrar Roupa')
+
+
 
 # Definindo as classes
 class Brecho(db.Model):
@@ -11,7 +24,7 @@ class Brecho(db.Model):
     qtProduto = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
-        return '<Name %r>' %self.name
+        return '<Brecho %r>' % self.cdPedido
     
 
 class Catalogo(db.Model):
@@ -28,7 +41,7 @@ class Catalogo(db.Model):
     dtCadastro = db.Column(db.DateTime, nullable=False)
 
     def __repr__(self):
-        return '<Name %r>' %self.name
+        return '<Catalogo %r>' % self.cdProduto
 
 
 class Cliente(db.Model):
@@ -49,5 +62,4 @@ class Cliente(db.Model):
     email = db.Column(db.String(50), nullable=False)
 
     def __repr__(self):
-        return '<Name %r>' %self.name
-
+        return f'<Cliente {self.nmCliente}>'

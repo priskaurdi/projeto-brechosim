@@ -1,7 +1,26 @@
 from flask import render_template, request, redirect, session, flash, url_for, send_file
-from models import Catalogo, Cliente
+from models import Catalogo, Cliente, FormBrecho
 from brecho import db, app
 from datetime import datetime
+from flask_wtf import FlaskForm
+from functools import wraps
+from werkzeug.utils import secure_filename
+import os
+
+
+# Funcao para centralizar a validacao
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'usuario_logado' not in session or session['usuario_logado'] is None:
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
+
+
+
+
+
 
 # Rota para renderizar a página inicial do brecho
 @app.route('/')
@@ -11,15 +30,14 @@ def iniciarBrecho():
 
 # Rota para editar o catalogo
 @app.route('/editar') #/<int:idFotoProduto
-def editar(): #idFotoProduto
-    if session.get('usuario_logado') is None:
-        return redirect(url_for('login'))
+@login_required
+def editar(idFotoProduto): 
     
-    #pecaBuscada = Catalogo.query.filter_by(idFotoProduto=idFotoProduto).first()
+    pecaBuscada = Catalogo.query.filter_by(idFotoProduto=idFotoProduto).first()
 
     return render_template('editar_catalogo.html', 
-                           titulo = 'Editar Catálogo')
-                           #peca = pecaBuscada)
+                           titulo = 'Editar Catálogo',
+                           peca = pecaBuscada)
 
 
 # Rota para atualizar o catalogo
@@ -43,9 +61,10 @@ def atualizar():
 
 # Rota para excluir item do catalogo
 @app.route('/excluir/<int:id>')
+@login_required
 def excluir(id):
     
-    peca = Catalogo.query.filter_by(idFotoProduto=request.form['idFotoProduto']).delete()
+    Catalogo.query.filter_by(idFotoProduto=id).delete()
 
     db.session.commit()
 
@@ -110,22 +129,22 @@ def sair():
 
 # Rota para renderizar a página de cadastro e processar o formulário
 @app.route('/cadastrar', methods=['GET', 'POST'])
+@login_required
 def cadastrar():
 
-    if session['usuario_logado'] == None or 'usuario_logado' not in session:
-        return redirect(url_for('login'))
-      
-    if request.method == 'POST':
+    form = FormBrecho()
+
+    if request.method == 'POST' and form.validate_on_submit():
         # Recupera os dados do formulário
         dtCadastro = datetime.now()
-        nmProduto = request.form['nmProduto']
-        cdFornecedor = 1  # Defina o valor do fornecedor conforme necessário
-        nmFornecedor = request.form['nmFornecedor']
-        cdCategoria = 1  # Defina o valor da categoria conforme necessário
-        nmCategoria = request.form['nmCategoria']
-        cdUnidade = 1  # Defina o valor da unidade conforme necessário
-        dsUnidade = request.form['dsUnidade']
-        vlUnidade = request.form['vlUnidade']
+        nmProduto = form.nome.data
+        cdFornecedor = 1
+        nmFornecedor = form.nmFornecedor.data
+        cdCategoria = 1
+        nmCategoria = form.categoria.data
+        cdUnidade = 1
+        dsUnidade = form.dsUnidade.data
+        vlUnidade = form.vlUnidade.data
         idFotoProduto = salvar_imagem(request.files['foto'])
         
             
@@ -146,9 +165,11 @@ def cadastrar():
         # Adiciona o novo item ao banco de dados
         db.session.add(novo_item)
         db.session.commit()
+        return redirect(url_for('verColecao'))
             
     # Renderiza a página de cadastro
-    return render_template('cadastra_catalogo.html')
+    return render_template('cadastra_catalogo.html', 
+                           form = form)
 
 # Função para salvar a imagem enviada pelo formulário
 def salvar_imagem(foto):
@@ -156,11 +177,14 @@ def salvar_imagem(foto):
     diretorio_destino = 'static/img_colecao/'
     
     # Salva a imagem no diretório de destino com o mesmo nome original do arquivo
-    caminho_imagem = diretorio_destino + foto.filename
+    if not os.path.exists(diretorio_destino):
+        os.makedirs(diretorio_destino)
+    filename = secure_filename(foto.filename)
+    caminho_imagem = os.path.join(diretorio_destino, filename)
     foto.save(caminho_imagem)
-    
+
     # Retorna o caminho completo da imagem
-    return foto.filename
+    return filename
 
 
 @app.route('/pagamento', methods=['POST'])
@@ -174,12 +198,11 @@ def pagamento():
     qr_path = 'static/qr_code_pix.png'
     qr.save(qr_path)
 
-    # Renderizar a página de confirmação de pagamento com o QR code do PIX
-    return render_template('confirmacao_pagamento.html', qr_code=qr_path)
-
     # Redirecionar para o WhatsApp
     produto = request.form['nome_produto']  # Supondo que você passe o nome do produto pelo formulário
     mensagem = f'Olá! Gostaria de comprar o produto {produto}.'
     numero_whatsapp = 'seu_numero_whatsapp'  # Substitua pelo número de WhatsApp real
     link_whatsapp = f'https://api.whatsapp.com/send?phone={numero_whatsapp}&text={mensagem}'
-    return redirect(link_whatsapp)
+
+    # Renderizar a página de confirmação de pagamento com o QR code do PIX
+    return render_template('confirmacao_pagamento.html', qr_code=qr_path, whatsapp_link=link_whatsapp)
